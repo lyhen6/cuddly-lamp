@@ -22,5 +22,11 @@
     </properties>
 
 
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+    </dependencyManagement>
+
 
 </project>

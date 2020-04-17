@@ -12,14 +12,82 @@
 
     <groupId>com.ly</groupId>
     <artifactId>cuddly-lamp-web</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>cuddly-lamp-web</name>
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
 
 
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!-- yml环境配置 -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>sit</id>
+            <properties>
+                <profiles.active>sit</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
+
+        <filters>
+            <filter>
+                <!-- filter中的文件表示替换源，即用这里面的文件中的value值替换那些占位符 -->
+                <!-- 如果filters中有多个filter，且这些filter中有相同的key，则后面的filter中的value值为最终值 -->
+                src/main/resources/application-${profiles.active}.yml
+            </filter>
+        </filters>
+
+
+        <!-- 包名 -->
         <finalName>cuddly-lamp-web</finalName>
+
+        <!-- maven切换环境打包配置 -->
+        <resources>
+
+            <!-- 第一个resource配置 “*”是通配符 表示此处有任何内容（没有也可以）都匹配 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>application*.yml</exclude>
+                </excludes>
+            </resource>
+
+            <!-- 第二个resource添加了application.properties默认配置文件和由profileActive属性决定的相应profile配置文件。
+            并且filtering为true表示，会将文件内容的“@xx@”替换为相应的变量
+            （如文件中的@profileActive@会替换为profileActive属性值）。 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 是否替换@xx@表示的maven properties属性值 -->
+                <filtering>true</filtering>
+                <includes>
+                    <include>application.yml</include>
+                    <include>application-${profiles.active}.yml</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
