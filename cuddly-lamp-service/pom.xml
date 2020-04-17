@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ly</groupId>
+        <artifactId>cuddly-lamp</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <groupId>com.ly</groupId>
+    <artifactId>cuddly-lamp-service</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>cuddly-lamp-service</name>
+    <packaging>war</packaging>
+
+
+    <build>
+        <finalName>cuddly-lamp-service</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
