@@ -17,11 +17,17 @@
 <!--    <packaging>war</packaging>-->
 
 
-    <dependencyManagement>
-        <dependencies>
 
-        </dependencies>
-    </dependencyManagement>
+    <dependencies>
+
+        <dependency>
+            <groupId>com.ly</groupId>
+            <artifactId>cuddly-lamp-client</artifactId>
+        </dependency>
+
+
+    </dependencies>
+
 
 
     <!-- yml环境配置 -->

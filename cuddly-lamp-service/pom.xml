@@ -16,11 +16,12 @@
     <name>cuddly-lamp-service</name>
     <packaging>war</packaging>
 
-    <dependencyManagement>
-        <dependencies>
-
-        </dependencies>
-    </dependencyManagement>
+    <dependencies>
+        <dependency>
+        <groupId>com.101tec</groupId>
+        <artifactId>zkclient</artifactId>
+        </dependency>
+    </dependencies>
 
 
     <build>
