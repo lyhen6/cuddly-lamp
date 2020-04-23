@@ -10,8 +10,8 @@ public class ZkTest implements Runnable {
 
     private static CountDownLatch cdl = new CountDownLatch(num);
 
-//    private ZkDistributeImproveLock zkDistributeImproveLock = new ZkDistributeImproveLock("/zookeeper/zkLock");
-    private ZkDistributeLock zkDistributeImproveLock = new ZkDistributeLock("/zookeeper/zkLock");
+    private ZkDistributeImproveLock zkDistributeImproveLock = new ZkDistributeImproveLock("/zookeeper/zkLock");
+//    private ZkDistributeLock zkDistributeImproveLock = new ZkDistributeLock("/zookeeper/zkLock");
 
     @Override
     public void run() {

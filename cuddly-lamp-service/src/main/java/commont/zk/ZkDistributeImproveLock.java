@@ -94,7 +94,7 @@ public class ZkDistributeImproveLock implements Lock {
            beforePath.set(node);
         }
 
-        System.out.println(">>>>>>>>>>>> 加锁失败 >>>>>>>>>>>");
+        System.out.println(Thread.currentThread().getName() + ">>>>>>>>>>>> 加锁失败 >>>>>>>>>>>");
         return false;
     }
 
