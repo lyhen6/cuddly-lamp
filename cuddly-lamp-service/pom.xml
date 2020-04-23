@@ -17,10 +17,20 @@
     <packaging>war</packaging>
 
     <dependencies>
+
+
         <dependency>
-        <groupId>com.101tec</groupId>
-        <artifactId>zkclient</artifactId>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo-common</artifactId>
+        </dependency>
+
+
+
     </dependencies>
 
 
