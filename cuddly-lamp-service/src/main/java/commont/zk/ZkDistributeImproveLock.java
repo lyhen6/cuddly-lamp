@@ -1,6 +1,7 @@
 package commont.zk;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.alibaba.fastjson.JSON;
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.exception.ZkNodeExistsException;
@@ -77,19 +78,22 @@ public class ZkDistributeImproveLock implements Lock {
             reenterCount.set(0);
         }
 
-        //  获取所有的号
+        //  获取所有的子节点
         List<String> childrenList = zkClient.getChildren(lockPath);
 
         Collections.sort(childrenList);
 
+        System.out.println(Thread.currentThread().getName() + " 全部节点大小 " + childrenList.size() + ", 节点列表  >>>>>>  " + JSON.toJSONString(childrenList));
+
         if(currentPath.get().equals(lockPath + "/" + childrenList.get(0))){
 
             reenterCount.set(reenterCount.get() + 1);
-            System.out.println(Thread.currentThread().getName() + " -------> 成功获得分布式锁");
+            System.out.println(Thread.currentThread().getName() + " -------> 成功获得分布式锁 , reenterCount get = " + reenterCount.get());
             return true;
         }
         else {
            int curIndex = childrenList.indexOf(currentPath.get().substring(lockPath.length() + 1));
+           System.out.println(Thread.currentThread().getName() + " curIndex = " + curIndex);
            String node = lockPath + "/" + childrenList.get(curIndex - 1);
            beforePath.set(node);
         }
@@ -111,6 +115,7 @@ public class ZkDistributeImproveLock implements Lock {
             public void handleDataDeleted(String s) throws Exception {
                 System.out.println(Thread.currentThread().getName() + " ------> 监听到节点被删除，分布式锁被释放");
                 cdl.countDown();
+                System.out.println(Thread.currentThread().getName() + " ------> 监听到节点被删除，分布式锁被释放111111");
             }
         };
 
@@ -119,7 +124,7 @@ public class ZkDistributeImproveLock implements Lock {
 
         if(zkClient.exists(beforePath.get())){
             try {
-                System.out.println(Thread.currentThread().getName() + " ---- > 分布式锁没抢到，进入阻塞状态");
+                System.out.println(Thread.currentThread().getName() + " ---- > 分布式锁没抢到，进入阻塞状态, 监听前一个节点为 >>>>>" + beforePath.get());
                 cdl.await();
                 System.out.println(Thread.currentThread().getName() + "------ > 释放分布式锁，被唤醒");
             } catch (InterruptedException e) {
@@ -132,7 +137,7 @@ public class ZkDistributeImproveLock implements Lock {
 
     @Override
     public void unlock() {
-        System.out.println(Thread.currentThread().getName() + " ------ > 释放分布式锁");
+        System.out.println(Thread.currentThread().getName() + " ------ > 释放分布式锁 , reenterCount get = " + reenterCount.get());
 
         if(reenterCount.get() > 1){
             reenterCount.set(reenterCount.get() - 1);
@@ -141,11 +146,14 @@ public class ZkDistributeImproveLock implements Lock {
 
         if(currentPath.get() != null){
 
+            System.out.println(Thread.currentThread().getName() + " ------ > 释放分布式锁 , currentPath get = " + currentPath.get());
+
             zkClient.delete(currentPath.get());
 
             currentPath.set(null);
 
             reenterCount.set(0);
+
         }
     }
 
