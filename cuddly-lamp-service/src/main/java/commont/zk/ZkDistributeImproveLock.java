@@ -107,6 +107,8 @@ public class ZkDistributeImproveLock implements Lock {
     }
 
     private void waitForLock(){
+
+        //  保证线程阻塞，计数器为1 如果监控到上一个节点删除（证明锁已经释放）就执行当前线程
         final CountDownLatch cdl = new CountDownLatch(1);
 
         IZkDataListener listener = new IZkDataListener() {
@@ -139,9 +141,6 @@ public class ZkDistributeImproveLock implements Lock {
             }
 
             zkClient.unsubscribeDataChanges(beforePath.get(), listener);
-        }
-        else {
-
         }
 
     }

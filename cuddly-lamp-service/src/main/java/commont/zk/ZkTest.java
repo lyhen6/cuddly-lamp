@@ -17,7 +17,7 @@ public class ZkTest implements Runnable {
     public void run() {
         try {
             zkDistributeImproveLock.lock();
-//            cdl.await();
+            cdl.await();
             if(inventory > 0){
                 Thread.sleep(10);
                 inventory--;
@@ -34,7 +34,7 @@ public class ZkTest implements Runnable {
     public static void main(String[] args) {
         for(int i=1; i<=num; i++){
             new Thread(new ZkTest()).start();
-//            cdl.countDown();
+            cdl.countDown();
         }
     }
 }
