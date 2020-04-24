@@ -69,26 +69,30 @@ public class ZkDistributeImproveLock implements Lock {
 
     @Override
     public boolean tryLock() {
-        System.out.println(Thread.currentThread().getName() + " -------> 尝试获取分布式锁");
 
         //  尝试创建 临时顺序节点
-        if(this.currentPath.get() == null || zkClient.exists(this.currentPath.get())){
+        if(currentPath.get() == null || !zkClient.exists(this.currentPath.get())){
             String node = zkClient.createEphemeralSequential(lockPath+"/", "locked");
             currentPath.set(node);
             reenterCount.set(0);
         }
+
+        System.out.println(Thread.currentThread().getName() + " -------> 尝试获取分布式锁" + ", 当前节点 ------> " + currentPath.get());
 
         //  获取所有的子节点
         List<String> childrenList = zkClient.getChildren(lockPath);
 
         Collections.sort(childrenList);
 
-        System.out.println(Thread.currentThread().getName() + " 全部节点大小 " + childrenList.size() + ", 节点列表  >>>>>>  " + JSON.toJSONString(childrenList));
+        System.out.println(Thread.currentThread().getName() + " 全部节点大小 " + childrenList.size() +
+                ", 节点列表  >>>>>>  " + JSON.toJSONString(childrenList) );
 
         if(currentPath.get().equals(lockPath + "/" + childrenList.get(0))){
 
             reenterCount.set(reenterCount.get() + 1);
-            System.out.println(Thread.currentThread().getName() + " -------> 成功获得分布式锁 , reenterCount get = " + reenterCount.get());
+            System.out.println(Thread.currentThread().getName() +
+                    " -------> 成功获得分布式锁 , reenterCount get = " + reenterCount.get() +
+                    ",  --------- > 最小节点路径 = " + lockPath + "/" + childrenList.get(0));
             return true;
         }
         else {
@@ -119,10 +123,13 @@ public class ZkDistributeImproveLock implements Lock {
             }
         };
 
-        //  注册 watcher
-        zkClient.subscribeDataChanges(beforePath.get(), listener);
+
 
         if(zkClient.exists(beforePath.get())){
+
+            //  注册 watcher
+            zkClient.subscribeDataChanges(beforePath.get(), listener);
+
             try {
                 System.out.println(Thread.currentThread().getName() + " ---- > 分布式锁没抢到，进入阻塞状态, 监听前一个节点为 >>>>>" + beforePath.get());
                 cdl.await();
@@ -130,9 +137,13 @@ public class ZkDistributeImproveLock implements Lock {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            zkClient.unsubscribeDataChanges(beforePath.get(), listener);
+        }
+        else {
+
         }
 
-        zkClient.unsubscribeDataChanges(beforePath.get(), listener);
     }
 
     @Override
@@ -148,7 +159,9 @@ public class ZkDistributeImproveLock implements Lock {
 
             System.out.println(Thread.currentThread().getName() + " ------ > 释放分布式锁 , currentPath get = " + currentPath.get());
 
-            zkClient.delete(currentPath.get());
+            boolean bl =  zkClient.delete(currentPath.get());
+
+            System.out.println(Thread.currentThread().getName() + " --------- > 删除节点flag = " + bl);
 
             currentPath.set(null);
 
