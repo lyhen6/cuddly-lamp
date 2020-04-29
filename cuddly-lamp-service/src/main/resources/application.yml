@@ -1,0 +1,7 @@
+
+netty:
+  tcpPort: 8801
+  bossCount: 4
+  workerCount: 16
+  keepAlive: true
+

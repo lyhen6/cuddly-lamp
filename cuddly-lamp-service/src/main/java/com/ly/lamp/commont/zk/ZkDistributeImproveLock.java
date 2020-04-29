@@ -1,4 +1,4 @@
-package commont.zk;
+package com.ly.lamp.commont.zk;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;

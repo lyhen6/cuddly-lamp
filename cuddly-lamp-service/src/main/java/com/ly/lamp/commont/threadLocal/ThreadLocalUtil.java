@@ -1,4 +1,4 @@
-package commont.threadLocal;
+package com.ly.lamp.commont.threadLocal;
 
 import java.util.concurrent.CountDownLatch;
 

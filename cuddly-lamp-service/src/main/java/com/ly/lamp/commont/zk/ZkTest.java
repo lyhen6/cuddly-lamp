@@ -1,4 +1,4 @@
-package commont.zk;
+package com.ly.lamp.commont.zk;
 
 import java.util.concurrent.CountDownLatch;
 

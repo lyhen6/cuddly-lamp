@@ -41,57 +41,9 @@
 		<module>cuddly-lamp-web</module>
 	</modules>
 
-	<dependencyManagement>
 		<dependencies>
 
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter</artifactId>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-web</artifactId>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-data-redis</artifactId>
-				<version>2.2.5.RELEASE</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.ly</groupId>
-				<artifactId>cuddly-lamp-client</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.101tec</groupId>
-				<artifactId>zkclient</artifactId>
-				<version>0.10</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>dubbo-common</artifactId>
-				<version>2.6.7</version>
-			</dependency>
-
-
-			<!--		<dependency>-->
-			<!--			<groupId>org.springframework.boot</groupId>-->
-			<!--			<artifactId>spring-boot-starter-test</artifactId>-->
-			<!--			<scope>test</scope>-->
-			<!--			<exclusions>-->
-			<!--				<exclusion>-->
-			<!--					<groupId>org.junit.vintage</groupId>-->
-			<!--					<artifactId>junit-vintage-engine</artifactId>-->
-			<!--				</exclusion>-->
-			<!--			</exclusions>-->
-			<!--		</dependency>-->
 		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<plugins>
